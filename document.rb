@@ -21,6 +21,7 @@ class Document
     number_word_characters / word_count
   end
 
+  # write simple and clear methods
   def number_word_characters
     words.inject( 0 ) { |total, word| total += word.size }
   end
@@ -113,23 +114,57 @@ class Document
     array.delete_if {|word| word.size < 3}
   end
 
+  # operators
+  def +(other)
+    Document.new(title, author, "#{@content} #{other.content}")
+  end
+
+  def <<(content)
+    @content << content
+    self
+  end
+
+  def [](index)
+    words[index]
+  end
+
+  # ruby equality
+  # equal? are they same objects, pointing to same objects
+  # == are are they logicaly the same
+
+  def ==(document)
+    return true if document.equal?(self)
+    # instance_of? have to be same class, no sublasses
+    # return false unless document.instance_of?(self.class)
+    # kind_of? checks subclasses also
+    # respond_to? wheather the object has method
+    return false unless document.kind_of?(self.class)
+    title == document.title && author == document.author
+  end
+
 end
 
-doc = Document.new("Ruby", "Vladimir", "Lorem ipsupm dolores sic amet...")
-puts doc.word_count
-puts doc.average_word_length
-puts doc.number_word_characters
-doc.title = "test"
-puts doc.title
-doc.print_first
-doc.print_fonts
-puts doc.get_title
-puts doc.tertiary_operator
-puts doc.nvl
-puts doc.create_hash
-puts doc.load_array("first","second","third")
-doc.iterate_hash
-puts doc.find_in_array("ce")
-puts doc.map_array
-puts doc.inject_array
-puts doc.delete_if_array
+class PrintableDocument
+  def print(printer)
+    return nil unless printer.available?
+    return :success
+  end
+end
+#doc = Document.new("Ruby", "Vladimir", "Lorem ipsupm dolores sic amet...")
+#puts doc.word_count
+#puts doc.average_word_length
+#uts doc.number_word_characters
+#doc.title = "test"
+#puts doc.title
+#doc.print_first
+#doc.print_fonts
+#puts doc.get_title
+#puts doc.tertiary_operator
+#puts doc.nvl
+#puts doc.create_hash
+#puts doc.load_array("first","second","third")
+#doc.iterate_hash
+#puts doc.find_in_array("ce")
+#puts doc.map_array
+#puts doc.inject_array
+#puts doc.delete_if_array
