@@ -73,5 +73,6 @@ puts doc.instance_variables.inspect
 puts doc.send(:word_count)
 # Ruby does not compare object types but
 # instead looks for right of kind of methods
+puts title
 
 

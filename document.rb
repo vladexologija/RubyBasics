@@ -1,12 +1,16 @@
 class Document
+  include Enumerable
 
-  attr_reader :title, :author, :content
-  attr_accessor :read_only
+  attr_reader :title, :author
+  attr_accessor :read_only, :content
 
   def initialize(title, author, content)
     @title = title
     @author = author
     @content = content
+    if block_given?
+      yield(self)
+    end
   end
 
   def words
@@ -131,6 +135,8 @@ class Document
   # ruby equality
   # equal? are they same objects, pointing to same objects
   # == are are they logicaly the same
+  # === used in case because of regexp
+  # eql? used in hash to decide are objects same after having same hash keys
 
   def ==(document)
     return true if document.equal?(self)
@@ -139,13 +145,19 @@ class Document
     # kind_of? checks subclasses also
     # respond_to? wheather the object has method
     return false unless document.kind_of?(self.class)
+    return false unless document.respond_to?(:words)
+    return false unless document.respond_to?(:word_count)
     title == document.title && author == document.author
   end
 
   # ruby blocks
-  def each_word
-    words.each do |word|
-      yield(word)
+  def each
+    begin
+      words.each do |word|
+        yield(word)
+      end
+    ensure
+      puts "ENSURE!"
     end
   end
 
@@ -157,6 +169,7 @@ class PrintableDocument
     return :success
   end
 end
+
 #doc = Document.new("Ruby", "Vladimir", "Lorem ipsupm dolores sic amet...")
 #puts doc.word_count
 #puts doc.average_word_length

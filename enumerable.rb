@@ -34,6 +34,10 @@ puts [1, 2, 3, 4, 5, 0].take(2)
 puts [1, 2, 0, 4, 5, 3].take_while {|i| i != 0}
 
 # each slice
+puts "each_cons:"
+(1..10).each_cons(2) {|i| puts i.inspect}
+
+# each slice
 puts "each_slice:"
 (1..10).each_slice(3) {|i| puts i.inspect}
 
