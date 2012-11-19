@@ -142,6 +142,13 @@ class Document
     title == document.title && author == document.author
   end
 
+  # ruby blocks
+  def each_word
+    words.each do |word|
+      yield(word)
+    end
+  end
+
 end
 
 class PrintableDocument
